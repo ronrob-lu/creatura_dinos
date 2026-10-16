@@ -21,6 +21,26 @@ Each dinosaur features fully animated models with smooth transitions:
 - `death`: Defeat animation
 - `jump`: Leaping animation
 
+## Spawn Eggs & Debug Commands
+
+Each dinosaur comes with a spawn egg item available in Creative inventory or via give commands:
+- **Apatosaurus Spawn Egg** (`dinos:spawn_egg_apatosaurus`)
+- **Parasaurolophus Spawn Egg** (`dinos:spawn_egg_parasaurolophus`)
+- **Stegosaurus Spawn Egg** (`dinos:spawn_egg_stegosaurus`)
+- **T-Rex Spawn Egg** (`dinos:spawn_egg_trex`)
+- **Triceratops Spawn Egg** (`dinos:spawn_egg_triceratops`)
+- **Velociraptor Spawn Egg** (`dinos:spawn_egg_velociraptor`)
+
+Right-click on any block with a spawn egg to spawn the dinosaur at that location.
+
+### Chat Command
+
+Players with the `give` privilege can spawn dinosaurs using the `/spawn_dino` chat command:
+```
+/spawn_dino <dino_name>
+```
+Example: `/spawn_dino trex`
+
 ## Dependencies
 
 - **Creatura** (`creatura` mod API)
@@ -34,9 +54,9 @@ Optional dependencies:
 2. Place the `dinos` directory inside your `mods/` directory.
 3. Enable `dinos` in your world configuration.
 
-## Spawning
+## Natural Spawning
 
-Dinosaurs spawn naturally in grassy, jungle, or forest biomes using Creatura's ABM spawning system.
+Dinosaurs spawn naturally on grass and soil nodes using Creatura's ABM spawning system.
 
 ## Licensing
 

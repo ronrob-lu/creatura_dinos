@@ -1,66 +1,5 @@
 -- Apatosaurus entity definition using Creatura API
 
-if not creatura.registered_utilities["dinos:wander"] then
-	creatura.register_utility("dinos:wander", function(self)
-		local timer = math.random(4, 10)
-		local goal
-		local function func(self)
-			timer = timer - (self.dtime or 0.1)
-			if timer <= 0 then
-				self:halt()
-				return true
-			end
-			if not goal then
-				local pos = self.object:get_pos()
-				if pos then
-					local angle = math.random() * math.pi * 2
-					local dist = math.random(6, 14)
-					goal = {
-						x = pos.x + math.cos(angle) * dist,
-						y = pos.y,
-						z = pos.z + math.sin(angle) * dist
-					}
-				end
-			end
-			if goal then
-				self:animate("walk")
-				if self:move(goal, "creatura:obstacle_avoidance", 0.5, "walk") then
-					self:halt()
-					return true
-				end
-			end
-		end
-		self:set_utility(func)
-	end)
-end
-
-if not creatura.registered_utilities["dinos:flee"] then
-	creatura.register_utility("dinos:flee", function(self, threat)
-		local timer = math.random(5, 8)
-		local function func(self)
-			timer = timer - (self.dtime or 0.1)
-			if timer <= 0 or not creatura.is_valid(threat) then
-				self:halt()
-				return true
-			end
-			local pos = self.object:get_pos()
-			local tpos = threat:get_pos()
-			if not pos or not tpos then
-				self:halt()
-				return true
-			end
-			local dir = vector.direction(tpos, pos)
-			local goal = {x = pos.x + dir.x * 15, y = pos.y, z = pos.z + dir.z * 15}
-			self:animate("run")
-			if self:move(goal, "creatura:obstacle_avoidance", 1.2, "run") then
-				self:halt()
-				return true
-			end
-		end
-		self:set_utility(func)
-	end)
-end
-
 creatura.register_mob("dinos:apatosaurus", {
 	-- Visuals
 	mesh = "dinos_apatosaurus.b3d",
@@ -123,11 +62,11 @@ creatura.register_mob("dinos:apatosaurus", {
 })
 
 creatura.register_abm_spawn("dinos:apatosaurus", {
-	chance = 800,
-	interval = 60,
-	min_height = 0,
-	max_height = 100,
+	chance = 150,
+	interval = 30,
+	min_height = -10,
+	max_height = 1000,
 	min_group = 1,
 	max_group = 3,
-	nodes = {"default:dirt_with_grass", "default:dry_dirt_with_grass"}
+	nodes = {"default:dirt_with_grass", "default:dry_dirt_with_grass", "group:soil", "group:spreading_dirt_type"}
 })
