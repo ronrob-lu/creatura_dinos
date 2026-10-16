@@ -1,40 +1,5 @@
 -- Stegosaurus entity definition using Creatura API
 
-if not creatura.registered_utilities["dinos:counter_attack"] then
-	creatura.register_utility("dinos:counter_attack", function(self, target)
-		local attack_timer = 0
-		local function func(self)
-			if not creatura.is_valid(target) or not creatura.is_alive(target) then
-				self:halt()
-				return true
-			end
-			local pos = self.object:get_pos()
-			local tpos = target:get_pos()
-			if not pos or not tpos then
-				self:halt()
-				return true
-			end
-			local dist = vector.distance(pos, tpos)
-			local reach = (self.width or 1) + 1.5
-			if dist <= reach then
-				self:halt()
-				local dir = vector.direction(pos, tpos)
-				self:turn_to(minetest.dir_to_yaw(dir))
-				self:animate("attack")
-				attack_timer = attack_timer + (self.dtime or 0.1)
-				if attack_timer >= 0.5 then
-					self:punch_target(target)
-					attack_timer = 0
-				end
-			else
-				self:animate("run")
-				self:move(tpos, "creatura:obstacle_avoidance", 1.0, "run")
-			end
-		end
-		self:set_utility(func)
-	end)
-end
-
 creatura.register_mob("dinos:stegosaurus", {
 	-- Visuals
 	mesh = "dinos_stegosaurus.b3d",
@@ -97,11 +62,11 @@ creatura.register_mob("dinos:stegosaurus", {
 })
 
 creatura.register_abm_spawn("dinos:stegosaurus", {
-	chance = 600,
-	interval = 60,
-	min_height = 0,
-	max_height = 100,
+	chance = 120,
+	interval = 30,
+	min_height = -10,
+	max_height = 1000,
 	min_group = 1,
 	max_group = 3,
-	nodes = {"default:dirt_with_grass", "default:dry_dirt_with_grass"}
+	nodes = {"default:dirt_with_grass", "default:dry_dirt_with_grass", "group:soil", "group:spreading_dirt_type"}
 })

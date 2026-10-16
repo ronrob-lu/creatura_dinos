@@ -62,11 +62,11 @@ creatura.register_mob("dinos:triceratops", {
 })
 
 creatura.register_abm_spawn("dinos:triceratops", {
-	chance = 650,
-	interval = 60,
-	min_height = 0,
-	max_height = 100,
+	chance = 130,
+	interval = 30,
+	min_height = -10,
+	max_height = 1000,
 	min_group = 1,
 	max_group = 4,
-	nodes = {"default:dirt_with_grass", "default:dry_dirt_with_grass"}
+	nodes = {"default:dirt_with_grass", "default:dry_dirt_with_grass", "group:soil", "group:spreading_dirt_type"}
 })

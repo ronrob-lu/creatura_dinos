@@ -5,6 +5,9 @@ local modpath = minetest.get_modpath("dinos")
 
 minetest.log("action", "[dinos] Loading animated dinosaur mod...")
 
+dofile(modpath .. "/utilities.lua")
+dofile(modpath .. "/spawn_eggs.lua")
+
 dofile(modpath .. "/apatosaurus.lua")
 dofile(modpath .. "/parasaurolophus.lua")
 dofile(modpath .. "/stegosaurus.lua")
