@@ -30,7 +30,7 @@ if not creatura.registered_utilities["dinos:wander"] then
 				end
 			end
 		end
-		self:set_op(func)
+		self:set_action(func)
 	end)
 end
 
@@ -57,7 +57,7 @@ if not creatura.registered_utilities["dinos:flee"] then
 				return true
 			end
 		end
-		self:set_op(func)
+		self:set_action(func)
 	end)
 end
 
@@ -92,7 +92,7 @@ if not creatura.registered_utilities["dinos:counter_attack"] then
 				self:move(tpos, "creatura:obstacle_avoidance", 1.0, "run")
 			end
 		end
-		self:set_op(func)
+		self:set_action(func)
 	end)
 end
 
@@ -127,6 +127,6 @@ if not creatura.registered_utilities["dinos:hunt"] then
 				self:move(tpos, "creatura:obstacle_avoidance", 1.0, "run")
 			end
 		end
-		self:set_op(func)
+		self:set_action(func)
 	end)
 end
