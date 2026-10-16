@@ -1,72 +1,88 @@
--- Stegosaurus entity definition using Creatura API
+-----------------
+-- Stegosaurus --
+-----------------
+
+local follow = {
+	"default:leaves",
+	"default:jungleleaves",
+	"default:fern_1",
+	"default:fern_2",
+	"default:fern_3",
+	"default:apple",
+	"farming:wheat",
+	"group:flora",
+	"group:leaves",
+}
 
 creatura.register_mob("dinos:stegosaurus", {
+	-- Stats
+	max_health = 65,
+	armor_groups = {fleshy = 85},
+	damage = 10,
+	speed = 3.5,
+	tracking_range = 16,
+	despawn_after = 1500,
+
+	-- Physics
+	max_fall = 4,
+	turn_rate = 4.5,
+	stepheight = 1.1,
+	bouyancy = 0.25,
+	makes_footstep_sound = true,
+	hitbox = {
+		width = 1.4,
+		height = 2.2
+	},
+
 	-- Visuals
 	mesh = "dinos_stegosaurus.b3d",
 	textures = {"dinos_stegosaurus.png"},
 	visual_size = {x = 1.0, y = 1.0},
-	hitbox = {
-		width = 1.5,
-		height = 2.2
-	},
 
-	-- Stats
-	max_health = 80,
-	damage = 12,
-	speed = 3.5,
-	tracking_range = 16,
-	despawn_after = 1500,
-	max_fall = 6,
-	turn_rate = 5,
-
-	-- Animations
+	-- Animations (from Blender NLA Strip Builder)
 	animations = {
-		idle   = {range = {x = 1, y = 62}, speed = 30, frame_blend = 0.3, loop = true},
-		walk   = {range = {x = 72, y = 142}, speed = 30, frame_blend = 0.3, loop = true},
-		run    = {range = {x = 152, y = 171}, speed = 30, frame_blend = 0.3, loop = true},
-		attack = {range = {x = 181, y = 226}, speed = 30, frame_blend = 0.3, loop = false},
-		death  = {range = {x = 236, y = 274}, speed = 30, frame_blend = 0.3, loop = false},
-		jump   = {range = {x = 284, y = 319}, speed = 30, frame_blend = 0.3, loop = false},
+		idle = {range = {x = 1, y = 63}, speed = 24, frame_blend = 0.3, loop = true},
+		stand = {range = {x = 1, y = 63}, speed = 24, frame_blend = 0.3, loop = true},
+		walk = {range = {x = 71, y = 143}, speed = 24, frame_blend = 0.3, loop = true},
+		run = {range = {x = 151, y = 172}, speed = 30, frame_blend = 0.3, loop = true},
+		attack = {range = {x = 180, y = 227}, speed = 24, frame_blend = 0.3, loop = false},
+		melee = {range = {x = 180, y = 227}, speed = 24, frame_blend = 0.3, loop = false},
+		death = {range = {x = 235, y = 274}, speed = 24, frame_blend = 0.3, loop = false},
+		jump = {range = {x = 282, y = 319}, speed = 24, frame_blend = 0.3, loop = false},
 	},
 
+	-- Behavior Parameters
+	follow = follow,
+	is_herding_mob = true,
+	is_grazing_mob = true,
+
+	-- Drops
 	drops = {
-		{name = "default:bone", min = 2, max = 5, chance = 1},
+		{name = "bonemeal:bone", min = 2, max = 5, chance = 1},
 	},
 
+	-- AI Utility Stack (Armored herbivore, defends itself with spiked tail)
 	utility_stack = {
-		{
-			utility = "dinos:wander",
-			get_score = function(self)
-				return 0.1
-			end
-		},
-		{
-			utility = "dinos:counter_attack",
-			get_score = function(self)
-				if self.last_punch_time and (minetest.get_gametime() - self.last_punch_time < 8) then
-					local puncher = self.last_puncher
-					if creatura.is_valid(puncher) and creatura.is_alive(puncher) then
-						return 0.8, {puncher}
-					end
-				end
-				return 0
-			end
-		}
+		dinos.mob_ai.basic_wander,
+		dinos.mob_ai.swim_seek_land,
+		dinos.mob_ai.follow_player,
+		dinos.mob_ai.counter_attack,
 	},
 
-	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, direction)
-		self.last_puncher = puncher
-		self.last_punch_time = minetest.get_gametime()
-		creatura.basic_punch_func(self, puncher, time_from_last_punch, tool_capabilities, direction)
-	end
+	activate_func = dinos.activate_func,
+	step_func = dinos.step_func,
+	death_func = dinos.death_func,
+	on_punch = dinos.on_punch,
+	on_rightclick = dinos.on_rightclick,
 })
 
 creatura.register_abm_spawn("dinos:stegosaurus", {
-	chance = 120,
-	interval = 30,
-	min_height = -10,
-	max_height = 1000,
+	chance = 6000,
+	interval = 60,
+	min_light = 10,
+	min_height = 1,
+	max_height = 200,
 	min_group = 1,
 	max_group = 3,
-	nodes = {"default:dirt_with_grass", "default:dry_dirt_with_grass", "group:soil", "group:spreading_dirt_type"}
+	nodes = {"default:dirt_with_grass", "default:dirt_with_rainforest_litter"},
 })
