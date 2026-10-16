@@ -45,13 +45,13 @@ creatura.register_mob("dinos:velociraptor", {
 			get_score = function(self)
 				local player = creatura.get_nearby_player(self)
 				if player and creatura.is_alive(player) then
-					return 0.8, {player}
+					return 0.8, player
 				end
 				local nearby_dino = creatura.get_nearby_object(self, {
 					"dinos:parasaurolophus"
 				})
 				if nearby_dino and creatura.is_alive(nearby_dino) then
-					return 0.7, {nearby_dino}
+					return 0.7, nearby_dino
 				end
 				return 0
 			end

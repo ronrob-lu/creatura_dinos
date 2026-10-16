@@ -46,7 +46,7 @@ creatura.register_mob("dinos:apatosaurus", {
 				if self.last_punch_time and (minetest.get_gametime() - self.last_punch_time < 5) then
 					local puncher = self.last_puncher
 					if creatura.is_valid(puncher) then
-						return 0.6, {puncher}
+						return 0.6, puncher
 					end
 				end
 				return 0

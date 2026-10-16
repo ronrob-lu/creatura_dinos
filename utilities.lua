@@ -11,7 +11,7 @@ if not creatura.registered_utilities["dinos:wander"] then
 				return true
 			end
 			if not goal then
-				local pos = self.object:get_pos()
+				local pos = self.object and self.object:get_pos()
 				if pos then
 					local angle = math.random() * math.pi * 2
 					local dist = math.random(6, 14)
@@ -30,12 +30,20 @@ if not creatura.registered_utilities["dinos:wander"] then
 				end
 			end
 		end
-		self:set_utility(func)
+		if self and self.set_utility then
+			self:set_utility(func)
+		end
 	end)
 end
 
 if not creatura.registered_utilities["dinos:flee"] then
 	creatura.register_utility("dinos:flee", function(self, threat)
+		if not (self and self.set_utility) and threat and threat.set_utility then
+			self, threat = threat, self
+		end
+		if type(threat) == "table" and not threat.get_pos then
+			threat = threat[1]
+		end
 		local timer = math.random(5, 8)
 		local function func(self)
 			timer = timer - (self.dtime or 0.1)
@@ -43,8 +51,8 @@ if not creatura.registered_utilities["dinos:flee"] then
 				self:halt()
 				return true
 			end
-			local pos = self.object:get_pos()
-			local tpos = threat:get_pos()
+			local pos = self.object and self.object:get_pos()
+			local tpos = threat and threat:get_pos()
 			if not pos or not tpos then
 				self:halt()
 				return true
@@ -57,20 +65,28 @@ if not creatura.registered_utilities["dinos:flee"] then
 				return true
 			end
 		end
-		self:set_utility(func)
+		if self and self.set_utility then
+			self:set_utility(func)
+		end
 	end)
 end
 
 if not creatura.registered_utilities["dinos:counter_attack"] then
 	creatura.register_utility("dinos:counter_attack", function(self, target)
+		if not (self and self.set_utility) and target and target.set_utility then
+			self, target = target, self
+		end
+		if type(target) == "table" and not target.get_pos then
+			target = target[1]
+		end
 		local attack_timer = 0
 		local function func(self)
 			if not creatura.is_valid(target) or not creatura.is_alive(target) then
 				self:halt()
 				return true
 			end
-			local pos = self.object:get_pos()
-			local tpos = target:get_pos()
+			local pos = self.object and self.object:get_pos()
+			local tpos = target and target:get_pos()
 			if not pos or not tpos then
 				self:halt()
 				return true
@@ -92,20 +108,28 @@ if not creatura.registered_utilities["dinos:counter_attack"] then
 				self:move(tpos, "creatura:obstacle_avoidance", 1.0, "run")
 			end
 		end
-		self:set_utility(func)
+		if self and self.set_utility then
+			self:set_utility(func)
+		end
 	end)
 end
 
 if not creatura.registered_utilities["dinos:hunt"] then
 	creatura.register_utility("dinos:hunt", function(self, target)
+		if not (self and self.set_utility) and target and target.set_utility then
+			self, target = target, self
+		end
+		if type(target) == "table" and not target.get_pos then
+			target = target[1]
+		end
 		local attack_timer = 0
 		local function func(self)
 			if not creatura.is_valid(target) or not creatura.is_alive(target) then
 				self:halt()
 				return true
 			end
-			local pos = self.object:get_pos()
-			local tpos = target:get_pos()
+			local pos = self.object and self.object:get_pos()
+			local tpos = target and target:get_pos()
 			if not pos or not tpos then
 				self:halt()
 				return true
@@ -127,6 +151,8 @@ if not creatura.registered_utilities["dinos:hunt"] then
 				self:move(tpos, "creatura:obstacle_avoidance", 1.0, "run")
 			end
 		end
-		self:set_utility(func)
+		if self and self.set_utility then
+			self:set_utility(func)
+		end
 	end)
 end
