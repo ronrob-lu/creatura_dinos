@@ -46,7 +46,7 @@ creatura.register_mob("dinos:stegosaurus", {
 				if self.last_punch_time and (minetest.get_gametime() - self.last_punch_time < 8) then
 					local puncher = self.last_puncher
 					if creatura.is_valid(puncher) and creatura.is_alive(puncher) then
-						return 0.8, {puncher}
+						return 0.8, puncher
 					end
 				end
 				return 0

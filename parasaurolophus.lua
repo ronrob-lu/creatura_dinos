@@ -47,13 +47,13 @@ creatura.register_mob("dinos:parasaurolophus", {
 				if player then
 					local dist = vector.distance(self.object:get_pos(), player:get_pos())
 					if dist < 6 then
-						return 0.5, {player}
+						return 0.5, player
 					end
 				end
 				if self.last_punch_time and (minetest.get_gametime() - self.last_punch_time < 5) then
 					local puncher = self.last_puncher
 					if creatura.is_valid(puncher) then
-						return 0.7, {puncher}
+						return 0.7, puncher
 					end
 				end
 				return 0
